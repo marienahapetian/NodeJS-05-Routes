@@ -1,7 +1,7 @@
 let films = require("../data/films.json");
 const path = require("path");
 const fs = require("fs");
-const dataPath = path.join(__dirname, "data", "films.json");
+const dataPath = path.join(__dirname, "../data/films.json");
 
 class FilmController {
 	static getAll(req, res) {
@@ -19,18 +19,19 @@ class FilmController {
 	static create(req, res) {
 		const nouveauFilm = req.body;
 
-		if (!nouveauFilm.titre || !nouveauFilm.id) {
-			return res.status(400).json({ message: "Titre et ID sont requis." });
+		if (films.some((f) => f.titre === nouveauFilm.titre)) {
+			return res.status(400).json({ message: "Un film avec ce Titre existe déjà." });
 		}
 
-		if (films.some((f) => f.id === nouveauFilm.id)) {
-			return res.status(400).json({ message: "Un film avec cet ID existe déjà." });
-		}
+		nouveauFilm.id = films[films.length - 1].id + 1;
+		console.log(films);
 
 		films.push(nouveauFilm);
 
+		console.log(films);
+
 		try {
-			fs.writeFileSync(dataPath, JSON.stringify(films, null, 2));
+			fs.writeFileSync(dataPath, JSON.stringify(films));
 			res.status(201).json({ message: "Film ajouté avec succès", film: nouveauFilm });
 		} catch (err) {
 			res.status(500).json({ message: "Erreur lors de l'ajout du film." });

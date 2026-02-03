@@ -8,7 +8,11 @@ class ValidateInput {
 		next();
 	}
 
-	static validateReqBody(req, res, next) {}
+	static validateBody(req, res, next) {
+		if (!req.body) return res.status(400).json({ message: "Request Body cannot be empty" });
+
+		next();
+	}
 }
 
 module.exports = ValidateInput;
