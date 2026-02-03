@@ -5,8 +5,10 @@ const realisateurRouter = require("./router/realisateurs");
 const HomeController = require("./controller/HomeController");
 const Error404 = require("./middleware/Error404");
 const ErrorServer = require("./middleware/ErrorServer");
+const Logger = require("./middleware/Logger");
 
 app.use(express.json());
+app.use(Logger);
 app.get("/", HomeController);
 app.use("/realisateurs", realisateurRouter);
 app.use("/films", filmRouter);
