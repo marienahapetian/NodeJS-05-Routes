@@ -13,9 +13,9 @@ filmRouter.get("/:id", ValidateInput.validateId, FilmController.getById);
 filmRouter.delete("/:id", ValidateInput.validateId, FilmController.delete);
 
 // POST /films — ajout d’un film
-filmRouter.post("/", ValidateInput.validateBody, ValidateFilmInput.validateBody, FilmController.create);
+filmRouter.post("/", ValidateInput.validateBody, ValidateFilmInput.validateCreateBody, FilmController.create);
 
 // PATCH /films/:id — modification du titre
-filmRouter.patch("/:id", ValidateInput.validateBody, ValidateInput.validateId, FilmController.update);
+filmRouter.patch("/:id", ValidateInput.validateId, ValidateInput.validateBody, ValidateFilmInput.validateUpdateBody, FilmController.update);
 
 module.exports = filmRouter;

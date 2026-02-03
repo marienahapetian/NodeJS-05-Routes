@@ -31,7 +31,7 @@ class FilmController {
 		console.log(films);
 
 		try {
-			fs.writeFileSync(dataPath, JSON.stringify(films));
+			fs.writeFileSync(dataPath, JSON.stringify(films, null, 2));
 			res.status(201).json({ message: "Film ajouté avec succès", film: nouveauFilm });
 		} catch (err) {
 			res.status(500).json({ message: "Erreur lors de l'ajout du film." });
@@ -39,18 +39,12 @@ class FilmController {
 	}
 
 	static update(req, res) {
-		const { titre } = req.body;
-
-		if (!titre) {
-			return res.status(400).json({ message: "Le champ 'titre' est requis." });
-		}
-
 		const film = films.find((f) => f.id === req.filmId);
 		if (!film) {
 			return res.status(404).json({ message: "Film à modifier introuvable." });
 		}
 
-		film.titre = titre;
+		film.titre = req.body.titre;
 
 		try {
 			fs.writeFileSync(dataPath, JSON.stringify(films, null, 2));
